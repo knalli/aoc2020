@@ -22,15 +22,12 @@ The AOC contains 24 days with at least one puzzle/question per day (mostly there
 * Each day has sub module named `day01`, `day02` until `day24` with a file `init.go` having 
   a function `Call`.
 * The day `tpl` is for templating new days, invoked by the script line `./create_day.sh <day>`.
-* The module `dayless` exists for explicit code sharing (common stuff).
 * Depending on content, a day could import (exported) symbols of a (previous) day.
 
 ## Usage
-As using Go modules (vgo), the dependencies should be resolved automatically.
 
-For running the day `test001`
-* CLI: just enter `go test001/main.go`
-* IDE (like IntelliJ/Golang): just execute the `test001/main.go`.
+For running the day `day00`
+* CLI: just enter `go run main.go 0`
 
 ## License / Copyright
 Everything is free for all.

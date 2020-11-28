@@ -4,22 +4,20 @@ import (
 	"errors"
 	"fmt"
 	"github.com/knalli/aoc"
-	"github.com/knalli/aoc2020/day00"
+	_ "github.com/knalli/aoc2020/day00"
 	"os"
 	"strconv"
 )
 
+func init() {
+	aoc.AocYear = 2020
+}
+
 func main() {
-	registerAll()
 	if err := invoke(os.Args); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-}
-
-func registerAll() {
-	aoc.AocYear = 2020
-	aoc.Registry.Register(00, day00.Call)
 }
 
 func invoke(args []string) error {

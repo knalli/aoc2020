@@ -5,7 +5,11 @@ import (
 	"github.com/knalli/aoc"
 )
 
-func Call(args []string) error {
+func init() {
+	aoc.Registry.Register(0, main)
+}
+
+func main(args []string) error {
 	aoc.PrintDayHeader(0, "It works")
 
 	for i := range args {

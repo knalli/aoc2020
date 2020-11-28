@@ -14,3 +14,7 @@ func Call(args []string) error {
 
 	return nil
 }
+
+func greet(name string) string {
+	return "Hello " + name
+}

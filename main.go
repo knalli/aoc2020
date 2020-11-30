@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"github.com/knalli/aoc"
 	_ "github.com/knalli/aoc2020/day00"
 	"os"
@@ -15,7 +14,7 @@ func init() {
 
 func main() {
 	if err := invoke(os.Args); err != nil {
-		fmt.Println(err)
+		aoc.PrintError(err)
 		os.Exit(1)
 	}
 }

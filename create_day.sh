@@ -42,8 +42,24 @@ func init() {
 }
 
 func main(args []string) error {
-	aoc.PrintDayHeader(${day}, "Day${day}")
+	aoc.PrintDayHeader(1, "Day ${day}")
+	if err := step1(args); err != nil {
+		return err
+	}
+	if err := step2(args); err != nil {
+		return err
+	}
 	return nil
+}
+
+func step1(args []string) error {
+	aoc.PrintStepHeader(1)
+	return err
+}
+
+func step2(args []string) error {
+	aoc.PrintStepHeader(2)
+	return err
 }
 
 EOF

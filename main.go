@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/knalli/aoc"
 	_ "github.com/knalli/aoc2020/day00"
+	_ "github.com/knalli/aoc2020/day01"
 	"os"
 	"strconv"
 )

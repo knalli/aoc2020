@@ -54,12 +54,12 @@ func main(args []string) error {
 
 func step1(args []string) error {
 	aoc.PrintStepHeader(1)
-	return err
+	return nil
 }
 
 func step2(args []string) error {
 	aoc.PrintStepHeader(2)
-	return err
+	return nil
 }
 
 EOF

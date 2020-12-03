@@ -54,16 +54,37 @@ func main(args []string) error {
 
 func step1(args []string) error {
 	aoc.PrintStepHeader(1)
-	return nil
+	if lines, err := aoc.ReadFileToArray("day${id}/puzzle1.txt"); err != nil {
+		return err
+	} else {
+		return solve1(lines)
+	}
 }
 
 func step2(args []string) error {
 	aoc.PrintStepHeader(2)
-	return nil
+	if lines, err := aoc.ReadFileToArray("day${id}/puzzle1.txt"); err != nil {
+		return err
+	} else {
+		return solve2(lines)
+	}
 }
 
 EOF
   okecho "Day $day created at 'day${id}/init.go'"
+  cat <<EOF >"day${id}/puzzle.go"
+package day${id}
+
+func solve1(lines []string) error {
+	return nil
+}
+
+func solve2(lines []string) error {
+	return nil
+}
+
+EOF
+  okecho "Day $day created at 'day${id}/puzzle.go'"
   return 0
 }
 

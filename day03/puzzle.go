@@ -7,10 +7,10 @@ import (
 
 func solve1(lines []string) error {
 	area := parseArea(lines)
-	way := runSlope(area, func(c coordinates) coordinates {
+	path := runSlope(area, func(c coordinates) coordinates {
 		return coordinates{x: c.x + 3, y: c.y + 1}
 	})
-	if count, err := countFilled(way, area); err != nil {
+	if count, err := countFilled(path, area); err != nil {
 		return err
 	} else {
 		//fmt.Println(area.toString(false))
@@ -22,34 +22,31 @@ func solve1(lines []string) error {
 func solve2(lines []string) error {
 	area := parseArea(lines)
 
-	navigators := make([]navigator, 5)
-	navigators[0] = func(c coordinates) coordinates {
-		return coordinates{x: c.x + 1, y: c.y + 1}
-	}
-	navigators[1] = func(c coordinates) coordinates {
-		return coordinates{x: c.x + 3, y: c.y + 1}
-	}
-	navigators[2] = func(c coordinates) coordinates {
-		return coordinates{x: c.x + 5, y: c.y + 1}
-	}
-	navigators[3] = func(c coordinates) coordinates {
-		return coordinates{x: c.x + 7, y: c.y + 1}
-	}
-	navigators[4] = func(c coordinates) coordinates {
-		return coordinates{x: c.x + 1, y: c.y + 2}
-	}
-	results := make([]int, len(navigators))
-	for i, nav := range navigators {
-		way := runSlope(area, nav)
+	paths := runSlopes(
+		area,
+		func(c coordinates) coordinates {
+			return coordinates{x: c.x + 1, y: c.y + 1}
+		},
+		func(c coordinates) coordinates {
+			return coordinates{x: c.x + 3, y: c.y + 1}
+		},
+		func(c coordinates) coordinates {
+			return coordinates{x: c.x + 5, y: c.y + 1}
+		},
+		func(c coordinates) coordinates {
+			return coordinates{x: c.x + 7, y: c.y + 1}
+		},
+		func(c coordinates) coordinates {
+			return coordinates{x: c.x + 1, y: c.y + 2}
+		},
+	)
+	result := 1
+	for _, way := range paths {
 		if count, err := countFilled(way, area); err != nil {
 			return err
 		} else {
-			results[i] = count
+			result *= count
 		}
-	}
-	result := 1
-	for _, n := range results {
-		result *= n
 	}
 	aoc.PrintSolution(fmt.Sprintf("Tobogann will encounter %d trees", result))
 	return nil
@@ -80,5 +77,13 @@ func runSlope(a *area, nav navigator) []coordinates {
 		result = append(result, current)
 	}
 
+	return result
+}
+
+func runSlopes(a *area, navs ...navigator) [][]coordinates {
+	result := make([][]coordinates, len(navs))
+	for i, nav := range navs {
+		result[i] = runSlope(a, nav)
+	}
 	return result
 }

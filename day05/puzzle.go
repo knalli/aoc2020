@@ -52,38 +52,36 @@ type passType struct {
 	id  int
 }
 
-func decodeBoardingPass(str string) (*passType, error) {
-
-	minRow := 0
-	maxRow := 127
-	minCol := 0
-	maxCol := 7
-
-	for i, c := range str {
-		if i < 7 {
-			if c == 'F' {
-				maxRow = maxRow - ((maxRow - minRow + 1) / 2)
-			} else if c == 'B' {
-				minRow = minRow + (maxRow-minRow)/2 + 1
-			} else {
-				return nil, errors.New("invalid character: 0-7 must be F or B")
-			}
+func bs(input string, lower rune, higher rune) (int, error) {
+	lo := 0
+	hi := (1 << len(input)) - 1
+	for _, c := range input {
+		if c == lower {
+			hi = (lo + hi) / 2
+		} else if c == higher {
+			lo = (lo+hi)/2 + 1
 		} else {
-			if c == 'L' {
-				maxCol = maxCol - ((maxCol - minCol + 1) / 2)
-			} else if c == 'R' {
-				minCol = minCol + (maxCol-minCol)/2 + 1
-			} else {
-				return nil, errors.New("invalid character: 8-10 must be L or R")
-			}
+			return -1, errors.New("invalid binary search process (invalid character)")
 		}
 	}
+	if lo != hi {
+		return -1, errors.New("invalid binary search result")
+	}
+	return lo, nil
+}
 
-	if minRow != maxRow || minCol != maxCol {
-		return nil, errors.New("invalid row/col found")
+func decodeBoardingPass(str string) (*passType, error) {
+
+	row, err := bs(str[0:7], 'F', 'B')
+	if err != nil {
+		return nil, err
+	}
+	col, err := bs(str[7:10], 'L', 'R')
+	if err != nil {
+		return nil, err
 	}
 
-	return &passType{row: minRow, col: minCol, id: passId(minRow, minCol)}, nil
+	return &passType{row: row, col: col, id: passId(row, col)}, nil
 }
 
 func passId(row int, col int) int {

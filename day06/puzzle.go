@@ -14,7 +14,9 @@ func solve1(lines []string) error {
 	}
 	count := 0
 	for _, answer := range answers {
-		count += countDistinctGroupAnswers(answer)
+		count += countGroupAnswers(answer, func(total int) bool {
+			return true
+		})
 	}
 	aoc.PrintSolution(fmt.Sprintf("The sum of all counts is %d", count))
 	return nil
@@ -27,7 +29,10 @@ func solve2(lines []string) error {
 	}
 	count := 0
 	for _, answer := range answers {
-		count += countSameGroupAnswers(answer)
+		l := len(answer)
+		count += countGroupAnswers(answer, func(total int) bool {
+			return total == l
+		})
 	}
 	aoc.PrintSolution(fmt.Sprintf("The sum of all counts is %d", count))
 	return nil
@@ -38,28 +43,16 @@ func parseAnswers(lines []string) ([][]string, error) {
 	matches := re.FindAllString(strings.Join(lines, "\n"), -1)
 	result := make([][]string, len(matches))
 	for i, group := range matches {
-		persons := strings.Split(strings.TrimSpace(group), "\n")
-		result[i] = make([]string, len(persons))
-		for j, person := range persons {
+		people := strings.Split(strings.TrimSpace(group), "\n")
+		result[i] = make([]string, len(people))
+		for j, person := range people {
 			result[i][j] = person
 		}
 	}
 	return result, nil
 }
 
-func countDistinctGroupAnswers(lines []string) int {
-	counts := make(map[int32]bool)
-	for _, line := range lines {
-		for _, c := range line {
-			if _, found := counts[c]; !found {
-				counts[c] = true
-			}
-		}
-	}
-	return len(counts)
-}
-
-func countSameGroupAnswers(lines []string) int {
+func countGroupAnswers(lines []string, check func(total int) bool) int {
 	counts := make(map[int32]int)
 	for _, line := range lines {
 		for _, c := range line {
@@ -70,10 +63,9 @@ func countSameGroupAnswers(lines []string) int {
 			}
 		}
 	}
-	// count only if number of counts is equal to number of answers
 	r := 0
 	for _, v := range counts {
-		if v == len(lines) {
+		if check(v) {
 			r++
 		}
 	}

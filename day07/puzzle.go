@@ -65,17 +65,17 @@ func parseRules(lines []string) ([]ruleType, error) {
 
 func countHolders(rules []ruleType, bag string) int {
 
-	stack := list.New()
+	q := list.New()
 	for _, r := range rules {
 		if _, found := r.innerBags[bag]; found {
-			stack.PushBack(r)
+			q.PushBack(r)
 		}
 	}
 
 	known := make(map[string]bool)
-	for stack.Len() > 0 {
-		element := stack.Front()
-		stack.Remove(element)
+	for q.Len() > 0 {
+		element := q.Front()
+		q.Remove(element)
 		top := element.Value.(ruleType)
 
 		if _, found := known[top.outerBag]; found {
@@ -85,7 +85,7 @@ func countHolders(rules []ruleType, bag string) int {
 		known[top.outerBag] = true
 		for _, r := range rules {
 			if _, found := r.innerBags[top.outerBag]; found {
-				stack.PushBack(r)
+				q.PushBack(r)
 			}
 		}
 	}

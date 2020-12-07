@@ -1,6 +1,7 @@
 package day07
 
 import (
+	"container/list"
 	"fmt"
 	"github.com/knalli/aoc"
 	"strings"
@@ -63,34 +64,33 @@ func parseRules(lines []string) ([]ruleType, error) {
 }
 
 func countHolders(rules []ruleType, bag string) int {
-	leafs := make([]ruleType, 0)
+
+	stack := list.New()
 	for _, r := range rules {
 		if _, found := r.innerBags[bag]; found {
-			leafs = append(leafs, r)
+			stack.PushBack(r)
 		}
 	}
 
-	result := make(map[string]bool)
-	for len(leafs) > 0 {
-		top := leafs[0]
+	known := make(map[string]bool)
+	for stack.Len() > 0 {
+		element := stack.Front()
+		stack.Remove(element)
+		top := element.Value.(ruleType)
 
-		// truncate
-		copy(leafs[0:], leafs[0+1:])
-		leafs[len(leafs)-1] = ruleType{"", map[string]int{}}
-		leafs = leafs[:len(leafs)-1]
-
-		if _, found := result[top.outerBag]; found {
+		if _, found := known[top.outerBag]; found {
 			continue
 		}
 
-		result[top.outerBag] = true
+		known[top.outerBag] = true
 		for _, r := range rules {
 			if _, found := r.innerBags[top.outerBag]; found {
-				leafs = append(leafs, r)
+				stack.PushBack(r)
 			}
 		}
 	}
-	return len(result)
+
+	return len(known)
 }
 
 func countBags(rules []ruleType, bag string) int {

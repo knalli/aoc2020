@@ -13,6 +13,7 @@ import (
 	_ "github.com/knalli/aoc2020/day07"
 	_ "github.com/knalli/aoc2020/day08"
 	_ "github.com/knalli/aoc2020/day09"
+	_ "github.com/knalli/aoc2020/day10"
 	"os"
 	"strconv"
 )

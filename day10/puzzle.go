@@ -62,9 +62,10 @@ func countVariants(chain []int, maxDiff int) (int, error) {
 	result := 1 // always itself
 
 	for i := 1; i < len(chain)-1; i++ {
-		// is a set of at least
+		// start of a 1-diff array?
 		if chain[i]-chain[i-1] == 1 {
 			l := 0
+			// check/count length of this 1-diff array
 			for j := i + 1; j < j+4; j++ {
 				if chain[j]-chain[j-1] == 1 {
 					l++
@@ -72,7 +73,7 @@ func countVariants(chain []int, maxDiff int) (int, error) {
 					break
 				}
 			}
-			// l is the total of the inner elements (not the bounds)
+			// l is the total of the inner elements (excluding bounds)
 			if l > 0 {
 				// 2^l 			are all possibilities
 				// 2^(l-3) 		are all possibilities which cannot be skipped

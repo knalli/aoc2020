@@ -27,7 +27,7 @@ func solve2(lines []string) error {
 	} else {
 		startPos := day11.NewPoint(0, 0)
 		waypoint := day11.NewPoint(10, 1)
-		if endPos, err := followInstructions2(startPos, EAST, waypoint, instructions); err != nil {
+		if endPos, err := followInstructions2(startPos, waypoint, instructions); err != nil {
 			return err
 		} else {
 			aoc.PrintSolution(fmt.Sprintf("The end position is %d/%d with d = %d", endPos.X, endPos.Y, ManhattenDistance(startPos, endPos)))
@@ -124,7 +124,7 @@ func followInstructions1(pos *day11.Point, dir Direction, instructions []Instruc
 	return pos, nil
 }
 
-func followInstructions2(pos *day11.Point, dir Direction, wpOffset *day11.Point, instructions []Instruction) (*day11.Point, error) {
+func followInstructions2(pos *day11.Point, wpOffset *day11.Point, instructions []Instruction) (*day11.Point, error) {
 
 	for _, ins := range instructions {
 		switch ins.Direction {

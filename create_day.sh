@@ -85,6 +85,19 @@ func solve2(lines []string) error {
 
 EOF
   okecho "Day $day created at 'day${id}/puzzle.go'"
+  touch "day${id}/sample1.txt" && okecho "Day $day created at 'day${id}/sample1.txt'"
+  touch "day${id}/puzzle1.txt" && okecho "Day $day created at 'day${id}/puzzle1.txt'"
+  # Patch main.go
+  local search
+  local adding
+  search=$(grep '//_ "github.com/knalli/aoc2020/dayXX"' main.go)
+  adding=$(echo "$search" | sed 's/\/\///g')
+  adding=$(echo "$adding" | sed -e "s/XX/$id/g")
+  if [[ "$OSTYPE" == "darwin"* ]] || [[ "$OSTYPE" == "freebsd"* ]]; then
+    sed -i '' "s#$search#$adding\n$search#" main.go
+  else
+    sed -i "s#$search#$adding\n$search#" main.go
+  fi
   return 0
 }
 

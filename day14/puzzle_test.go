@@ -22,7 +22,7 @@ func Test_intToBits(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := int2Bits(tt.args.val); !reflect.DeepEqual(got, tt.want) {
+			if got := int2Bits(tt.args.val, 4); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("int2Bits() = %v, want %v", got, tt.want)
 			}
 		})

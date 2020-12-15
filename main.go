@@ -18,6 +18,7 @@ import (
 	_ "github.com/knalli/aoc2020/day12"
 	_ "github.com/knalli/aoc2020/day13"
 	_ "github.com/knalli/aoc2020/day14"
+	_ "github.com/knalli/aoc2020/day15"
 	//_ "github.com/knalli/aoc2020/dayXX"
 	"os"
 	"strconv"

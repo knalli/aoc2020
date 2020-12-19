@@ -88,39 +88,45 @@ func isValid(message string, rules map[int]*Rule) bool {
 
 	var valid func(pos int, rule *Rule) ([]int, bool)
 	valid = func(pos int, rule *Rule) ([]int, bool) {
+		// out of bound
 		if pos > len(message)-1 {
 			return []int{}, false
 		}
+		// direct match
 		if rule.match {
 			ok := message[pos] == rule.matchValue
-			if ok {
-				//printMessagePosition(message, pos)
-			}
 			return []int{pos + 1}, ok
 		}
+		// sub rules / groups matching
 		lastPositions := make([]int, 0)
 		for _, group := range rule.groups {
-			groupStartPos := pos
-			groupRunningCurrentPositions := []int{groupStartPos}
+			// all position options for this group (initially the current position)
+			currentPositions := []int{pos}
 			for _, subRuleId := range group {
 				subRule := rules[subRuleId]
-				groupRunningNextPositions := make([]int, 0)
-				for _, groupRunningPos := range groupRunningCurrentPositions {
-					if subGroupLastPositions, subGroupValid := valid(groupRunningPos, subRule); subGroupValid {
-						for _, subGroupLastPos := range subGroupLastPositions {
-							groupRunningNextPositions = append(groupRunningNextPositions, subGroupLastPos)
+				// each position will be consumed; if verified, its successor will be added again
+				successorPositions := make([]int, 0)
+				for _, groupRunningPos := range currentPositions {
+					// only if the sub rule is valid, all its last positions will be added as successors
+					if subRuleLastPositions, subRuleValid := valid(groupRunningPos, subRule); subRuleValid {
+						for _, p := range subRuleLastPositions {
+							successorPositions = append(successorPositions, p)
 						}
 					} else {
-						continue
+						continue // running position invalid, try next
 					}
 				}
-				if len(groupRunningNextPositions) == 0 {
-					groupRunningCurrentPositions = []int{}
-					break
+				if len(successorPositions) == 0 {
+					// if no successor was found, the current positions are all invalid
+					currentPositions = []int{}
+					break // rule invalid, try next
+				} else {
+					// reset the current positions with the new successor ones
+					currentPositions = successorPositions
 				}
-				groupRunningCurrentPositions = groupRunningNextPositions
 			}
-			for _, p := range groupRunningCurrentPositions {
+			// collect all group's positions as available lastPositions for this rule
+			for _, p := range currentPositions {
 				lastPositions = append(lastPositions, p)
 			}
 		}
@@ -131,6 +137,7 @@ func isValid(message string, rules map[int]*Rule) bool {
 	}
 
 	if lastPositions, ok := valid(0, rules[0]); ok && len(lastPositions) > 0 {
+		// only a lastPosition at the position right after the last valid one (i.e. len(messages)) is valid
 		for _, p := range lastPositions {
 			if p == len(message) {
 				return true

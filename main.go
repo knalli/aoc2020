@@ -23,6 +23,7 @@ import (
 	_ "github.com/knalli/aoc2020/day17"
 	_ "github.com/knalli/aoc2020/day18"
 	_ "github.com/knalli/aoc2020/day19"
+	_ "github.com/knalli/aoc2020/day20"
 	_ "github.com/knalli/aoc2020/day21"
 	//_ "github.com/knalli/aoc2020/dayXX"
 	"os"

@@ -2,4 +2,4 @@ module github.com/knalli/aoc2020
 
 go 1.15
 
-require github.com/knalli/aoc v1.1.0
+require github.com/knalli/aoc v1.2.1

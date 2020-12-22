@@ -4,38 +4,34 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"github.com/knalli/aoc"
+	"hash"
 	"sort"
 	"strings"
 )
 
 func solve1(lines []string) error {
-	queues := parseCardStacks(lines)
-	_, score := playGame(queues, 0, false, false)
+	_, score := playGame1(parseCardStacks(lines), false)
 	aoc.PrintSolution(fmt.Sprintf("The winning player's score is %d", score))
 	return nil
 }
 
 func solve2(lines []string) error {
-	queues := parseCardStacks(lines)
-	_, score := playGame(queues, 0, true, false)
+	_, score := playGame2(parseCardStacks(lines), 0, false)
 	aoc.PrintSolution(fmt.Sprintf("The winning player's score is %d", score))
 	return nil
 }
 
-func playGame(queues []*aoc.Queue, game int, recursive bool, debug bool) (int, int) {
+func playGame1(queues []*aoc.Queue, debug bool) (int, int) {
+	return playGame(queues, 0, 0, false, debug, sha256.New())
+}
+
+func playGame2(queues []*aoc.Queue, game int, debug bool) (int, int) {
+	return playGame(queues, game, game+1, true, debug, sha256.New())
+}
+
+func playGame(queues []*aoc.Queue, game int, nextGame int, recursive bool, debug bool, h hash.Hash) (int, int) {
 
 	hashes := make([]string, 0)
-
-	/*
-		cloneQueue := func(q *aoc.Queue) *aoc.Queue {
-			clone := q.Clone()
-			for i := q.Len(); i > 0; i-- {
-				v := q.Head()
-				clone.Add(v)
-				q.Add(v)
-			}
-			return clone
-		}*/
 
 	queueToList := func(q *aoc.Queue) []string {
 		result := make([]string, 0)
@@ -56,7 +52,7 @@ func playGame(queues []*aoc.Queue, game int, recursive bool, debug bool) (int, i
 				s += fmt.Sprintf("%d,", clone.Head())
 			}
 		}
-		h := sha256.New()
+		h.Reset()
 		h.Write([]byte(s))
 		return fmt.Sprintf("%x", h.Sum(nil))
 	}
@@ -163,9 +159,10 @@ func playGame(queues []*aoc.Queue, game int, recursive bool, debug bool) (int, i
 							clones[p].Add(t.Head())
 						}
 					}
-					winner, _ = playGame(clones, game+1, recursive, debug)
+					winner, _ = playGame(clones, nextGame, nextGame+1, recursive, debug, h)
+					nextGame++
 					debugMsg(fmt.Sprintf("The winner of game %d is player %d!", game+2, winner+1))
-					debugMsg(fmt.Sprintf("... anyway, back to game %d.", game+1))
+					debugMsg(fmt.Sprintf("... anyway, back to game %d.\n", game+1))
 
 					queues[winner].Add(deck[winner])
 					for p, v := range deck {

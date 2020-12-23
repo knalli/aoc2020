@@ -1,9 +1,7 @@
 github.com/fatih/color v1.10.0 h1:s36xzo75JdqLaaWoiEHk767eHiwo0598uUxyfiPkDsg=
 github.com/fatih/color v1.10.0/go.mod h1:ELkj/draVOlAH/xkhN6mQ50Qd0MPOk5AAr3maGEBuJM=
-github.com/knalli/aoc v1.1.0 h1:Z2/buJlCqTdJJKwGNAbsj3QJeE9oZN7XSGS9D0M1d+8=
-github.com/knalli/aoc v1.1.0/go.mod h1:/yOwt/qnjjugKPI26aKQZzoiWcCXEo0X85xEu8o/7X4=
-github.com/knalli/aoc v1.2.1 h1:wr0FBCrMehiTqMWTY21ooecwoACP/UIpI7CjN+fcrkY=
-github.com/knalli/aoc v1.2.1/go.mod h1:/yOwt/qnjjugKPI26aKQZzoiWcCXEo0X85xEu8o/7X4=
+github.com/knalli/aoc v1.3.0 h1:iB8Fcv5F3j177UP4dRJtTO/M7yS9CjeMNYmQmr9V3Vo=
+github.com/knalli/aoc v1.3.0/go.mod h1:/yOwt/qnjjugKPI26aKQZzoiWcCXEo0X85xEu8o/7X4=
 github.com/mattn/go-colorable v0.1.8 h1:c1ghPdyEDarC70ftn0y+A/Ee++9zz8ljHG1b13eJ0s8=
 github.com/mattn/go-colorable v0.1.8/go.mod h1:u6P/XSegPjTcexA+o6vUJrdnUu04hMope9wVRipJSqc=
 github.com/mattn/go-isatty v0.0.12 h1:wuysRhFDzyxgEmMf5xjvJ2M9dZoWAXNNr5LSBS7uHXY=

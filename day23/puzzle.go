@@ -109,6 +109,7 @@ func play(rounds int, ctx *Context, part1 bool, part2 bool, debug bool) (string,
 		for search := ctx.current.Value().(int) - 1; ; {
 			if search < minValue {
 				search = maxValue
+				continue
 			}
 			taken := false
 			for i := 0; i < len(ctx.picks); i++ {
@@ -121,12 +122,11 @@ func play(rounds int, ctx *Context, part1 bool, part2 bool, debug bool) (string,
 				search--
 				continue
 			}
-			destination := links[search]
-			if destination != nil {
-				ctx.destination = destination
-				break
+			ctx.destination = links[search]
+			if ctx.destination == nil {
+				panic("destination not found")
 			}
-			search--
+			break
 		}
 		if debug {
 			debugMessages = append(
